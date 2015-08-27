@@ -1,1 +1,5 @@
- require("./lib/index.js");
+
+
+exports.MsgBox=require("./lib/main").MsgBox;
+
+
