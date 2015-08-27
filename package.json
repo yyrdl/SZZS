@@ -1,8 +1,23 @@
 {
-  "name":"SZZS",
-  "decription":"propes for APM",
-  "author":"Jason Zheng",
-  "dependencies":{
-    "url":"*"
-  }
+  "name": "szzs",
+  "decription": "propes for APM",
+  "version": "0.1.0",
+  "author": "Jason Zheng",
+  "description": "```\r     node.js 应用性能监测器的探针，最终支持分布式系统。\r     取名为SZZS是为了纪念2015年6月至8月的A股（上证指数）\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yyrdl/SZZS.git"
+  },
+  "keywords": [
+    "AMP"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yyrdl/SZZS/issues"
+  },
+  "homepage": "https://github.com/yyrdl/SZZS#readme"
 }
