@@ -1,0 +1,8 @@
+{
+  "name":"SZZS",
+  "decription":"propes for APM",
+  "author":"Jason Zheng",
+  "dependencies":{
+    "url":"*"
+  }
+}
