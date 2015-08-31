@@ -8,7 +8,9 @@
 ```
 ##使用方法
 ```
-    在项目的最开始写：
+     先 npm install szzs
+
+     然后在项目的最开始写：
 
      var MsgBox=require("szzs").MsgBox;
 
