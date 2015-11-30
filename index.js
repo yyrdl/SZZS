@@ -1,5 +1,5 @@
 
 
-exports.MsgBox=require("./lib/main").MsgBox;
+module.exports=require("./lib/main");
 
 
