@@ -8,8 +8,9 @@
 ```
 ## 详细文档
 ##### 1 目前的监听的模块的全量信息
+
 * http的全量信息：
-  ```javascript
+```javascript
       //http_client
       {
             "type":"http_client",
@@ -39,9 +40,10 @@
             "is_error":"",
             "error":""
       }
-  ```
+```
+
 * mysql全量信息
- ```javascript
+```javascript
      {
             "type":"mysql",
             "host_ip":"",//本机ip
@@ -57,9 +59,10 @@
             "dest":""//应当时拓扑图要求加的参数
      }
      dest=server_ip+":"+"/"+server_port+"/"+database
- ```
+```
+
 * redis 全量信息
- ```javascript
+```javascript
    {
                 "type":"redis",
                 "host_ip":"",//本机ip
@@ -74,9 +77,10 @@
                 "dest":""
    }
    dest=server_ip+":"+server_port
- ```
+```
+
 * pg 全量信息
- ```javascript
+```javascript
    {
              "type":"pg",
              "host_ip":"",//本机ip
@@ -92,7 +96,7 @@
              "dest":""
    }
    dest=server_ip+":"+"/"+server_port+"/"+database
- ```
+```
  
 ##### 2. 使用示例
   npm install szzs
