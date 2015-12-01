@@ -106,7 +106,7 @@
     "project_name":"szzs test",//设置项目名
     "http_server":{//设置要监听的type
        "host_ip":{"value":null}//在type为http_server的监测信息中提取host_ip字段
-       //其余的除默认字段外全部会被忽略,若value的指不为null，则监测信息的该字段的
+       //其余的除默认字段外全部会被忽略,若value的值不为null，则监测信息的该字段的
        //值始终为您再这里设置的值。
     },
     "redis":{
