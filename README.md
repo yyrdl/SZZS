@@ -4,7 +4,7 @@
     取名为SZZS是为了纪念2015年6月至8月的A股（上证指数）
     目前支持监测http协议的收发，数据库支持mysql ,postgress, redis.
     因为个人项目需要只写了这几个，其他的模块在后续不忙的时候添加
-
+    非常感谢my great master [dingziran](https://github.com/dingziran)和鸣哥提出的建议。
 ```
 ## 详细文档
 ##### 1 目前的监听的模块的全量信息
