@@ -123,7 +123,7 @@
 
 var szzs=require("szzs");
 szzs.config(config).on("message",function(msg){
-   //这里探针会传来监测到的信息，你可以在这里选择书写你自己的处理逻辑
+   //这里探针会传来监测到的信息，你可以在这里写你自己的监测信息处理逻辑
    console.log(msg);
 });
 ```
