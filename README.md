@@ -107,7 +107,8 @@
     "http_server":{//设置要监听的type
        "host_ip":{"value":null}//在type为http_server的监测信息中提取host_ip字段
        //其余的除默认字段外全部会被忽略,若value的值不为null，则监测信息的该字段的
-       //值始终为您再这里设置的值。
+       //值始终为您再这里设置的值。比如您设成了127.0.0.1，szzs采集到一条http_server信息里的
+       //host_ip的值是110.110.110.110，那么该字段的值会被替换成127.0.0.1
     },
     "redis":{
         "host_ip":{"value":null}
