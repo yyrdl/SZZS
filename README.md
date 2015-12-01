@@ -6,7 +6,7 @@
    
 非常感谢my great master [dingziran](https://github.com/dingziran)和鸣哥提出的建议。
 ## 详细文档
-##### 1 目前的监听的模块的全量信息
+##### 1 目前所监听模块的全量信息
 
 * http的全量信息：
 ```javascript
