@@ -25,12 +25,13 @@
             "error":"",
             "dest":""
       }
+       dest="http://"+server_ip+":"+server_port+path
       //http_server
       {
             "type":"http_server",
             "host_ip":"",//本机Ip
             "host_name":"",//本机名
-            "port":"",
+            "host_port":"",
             "client_ip":"",//对方主机Ip
             "time_cost":"",
             "dest":"",
@@ -39,6 +40,7 @@
             "is_error":"",
             "error":""
       }
+      dest="http://"+host_ip+":"+host_port+req.url
 ```
 
 * mysql全量信息
@@ -103,7 +105,7 @@
 在项目的最开始加如下代码:
 ```javascript
    var config={
-    "project_name":"szzs test",//设置项目名
+    "project_name":"szzs test",//设置项目名,不设的话，默认不加，设的话捕捉的消息中会加这一项
     "http_server":{//设置要监听的type
        "host_ip":{"value":null}//在type为http_server的监测信息中提取host_ip字段
        //其余的除默认字段外全部会被忽略,若value的值不为null，则监测信息的该字段的
@@ -121,7 +123,13 @@
      }
 };
 //只有在这里配置了的模块才会被监听
-
+/*
+  var config={
+    "pg":{}
+  };
+   这样的配置表示只监听pg，且输出的信息只包含默认输出
+  }
+*/
 var szzs=require("szzs");
 szzs.config(config).on("message",function(msg){
    //这里探针会传来监测到的信息，你可以在这里写你自己的监测信息处理逻辑
@@ -130,13 +138,14 @@ szzs.config(config).on("message",function(msg){
 ```
 默认会有的字段:
 * type
-* project_name
 * is_error
   布尔类型
 * error  
   值可能是undefined
 * dest
 * time_cost
+* host_ip
+  本机ip(优先外网IP)
 
 
  监测到的结果示例：
@@ -149,11 +158,10 @@ szzs.config(config).on("message",function(msg){
   host_ip: '***.***.***.***' }
   
   { type: 'http_server',
-  time_cost: 41,
-  is_error: false,
-  dest: '/public/html/index.html',
-  project_name: 'szzs test',
-  host_ip: '***.***.***.***' }
+    time_cost: 566,
+    host_ip: '***.***.***.***',
+    dest: 'http://***.***.***.***:8080/get_view',
+    is_error: false }
   
   { type: 'pg',
   time_cost: 144,
