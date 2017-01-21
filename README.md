@@ -1,117 +1,17 @@
-##简介
-    node.js 应用性能监测器的探针，最终支持分布式系统。
-    取名为SZZS是为了纪念2015年6月至8月的A股（上证指数）
-    目前支持监测http协议的收发，数据库支持mysql ,postgress, redis.
-    因为个人项目需要只写了这几个，其他的模块在后续不忙的时候添加
-   
-非常感谢my great master [dingziran](https://github.com/dingziran)和鸣哥提出的建议。
-## 详细文档
-##### 1 目前所监听模块的全量信息
-
-* http的全量信息：
-```javascript
-      //http_client
-      {
-            "type":"http_client",
-            "host_ip":"",//本机Ip
-            "host_name":"",//本机名
-            "server_ip":"",//请求目的主机的Ip
-            "server_port":"",//请求主机上对应服务监听的端口
-            "path":"",
-            "headers":"",
-            "method":"",
-            "time_cost":"",
-            "is_error":"",
-            "error":"",
-            "dest":""
-      }
-       dest="http://"+server_ip+":"+server_port+path
-      //http_server
-      {
-            "type":"http_server",
-            "host_ip":"",//本机Ip
-            "host_name":"",//本机名
-            "host_port":"",
-            "client_ip":"",//对方主机Ip
-            "time_cost":"",
-            "dest":"",
-            "req_method":"",
-            "res_statuscode":"",
-            "is_error":"",
-            "error":""
-      }
-      dest="http://"+host_ip+":"+host_port+req.url
-```
-
-* mysql全量信息
-```javascript
-     {
-            "type":"mysql",
-            "host_ip":"",//本机ip
-            "host_name":"",//本机名
-            "server_ip":"",//mysql所在服务器的IP
-            "server_port":"",//mysql工作的端口
-            "database":"",//数据库名
-            "time_cost":"",//耗时
-            "sql":"",//本次请求的sql语句
-            "parameter":"",//本次请求发送的参数
-            "is_error":false,//是否出错
-            "error":"",//error.message
-            "dest":""//应当时拓扑图要求加的参数
-     }
-     dest=server_ip+":"+"/"+server_port+"/"+database
-```
-
-* redis 全量信息
-```javascript
-   {
-                "type":"redis",
-                "host_ip":"",//本机ip
-                "host_name":"",//本机名
-                "server_ip":"",//redis所在主机的IP
-                "server_port":"",//redis的工作端口
-                "command":"",//本条操作所使用的redis指令名
-                "parameter":"",//参数
-                "is_error":false,
-                "error":"",
-                "time_cost":0,
-                "dest":""
-   }
-   dest=server_ip+":"+server_port
-```
-
-* pg 全量信息
-```javascript
-   {
-             "type":"pg",
-             "host_ip":"",//本机ip
-             "host_name":"",//本机名
-             "server_ip":"",//redis所在主机的IP
-             "server_port":"",//redis的工作端口
-             "database":"",//目标数据库名
-             "sql":"",
-             "parameter":"",
-             "is_error":"",
-             "error":"",
-             "time_cost":"",
-             "dest":""
-   }
-   dest=server_ip+":"+"/"+server_port+"/"+database
-```
- 
-##### 2. 使用示例
-  npm install szzs
+## intro
+    szzs is node.js performance probe, it can gather information of some frequently-used node.js lib ,such as mysql,postgress,redis,and http module. Not for all common-use libs,and I am __not going to maintaining__ this project. But it shows a nice way to collect information at runtime.The core code is in directory main and spy,and main idea is hooking target module when it is loading by the module system.
   
-在项目的最开始加如下代码:
+## how to use
+ npm install szzs
+  
+adding code like below at the most beginnig of your project ,and config szzs
 ```javascript
+   // config what module you want to monitor
    var config={
-    "project_name":"szzs test",//设置项目名,不设的话，默认不加，设的话捕捉的消息中会加这一项
-    "http_server":{//设置要监听的type
-       "host_ip":{"value":null}//在type为http_server的监测信息中提取host_ip字段
-       //其余的除默认字段外全部会被忽略,若value的值不为null，则监测信息的该字段的
-       //值始终为您再这里设置的值。比如您设成了127.0.0.1，szzs采集到一条http_server信息里的
-       //host_ip的值是110.110.110.110，那么该字段的值会被替换成127.0.0.1
-    },
+    "project_name":"szzs test",//set your project name,optional 
+    "http_server":{// the module you want to monitor
+       "host_ip":{"value":null}//what field you want, if the value of key "key" is not null ,it will be the de default value
+     },
     "redis":{
         "host_ip":{"value":null}
      },
@@ -122,33 +22,33 @@
         "server_ip":{"value":null}
      }
 };
-//只有在这里配置了的模块才会被监听
+ 
 /*
+  // config like this means "I" just want to monitor pg(postgress)
   var config={
     "pg":{}
   };
-   这样的配置表示只监听pg，且输出的信息只包含默认输出
   }
 */
+// the code before your project 
 var szzs=require("szzs");
 szzs.config(config).on("message",function(msg){
-   //这里探针会传来监测到的信息，你可以在这里写你自己的监测信息处理逻辑
+   //handle the informations collected by szzs
    console.log(msg);
 });
 ```
-默认会有的字段:
-* type
-* is_error
-  布尔类型
-* error  
-  值可能是undefined
-* dest
-* time_cost
-* host_ip
-  本机ip(优先外网IP)
+default fields:
+
+* type //means which  module
+* is_error //boolean ,is error occurred
+* error  //the error ,may be undefined
+* dest //the target end point ,maybe your mysql database address
+* time_cost //time cost (ms)
+* host_ip //local machine ip(IPV4)
 
 
- 监测到的结果示例：
+result example：
+ 
 ```javascript
  { type: 'redis',
   time_cost: 84,
@@ -170,9 +70,106 @@ szzs.config(config).on("message",function(msg){
   project_name: 'szzs test',
   host_ip: '***.***.***.***' }
 ```
-##### 3. 自定义探针
-###### 3.1 Promise类型
-  若返回是一个promise ,请使用szzz.promiseProxy,使用示例如下：
+
+ 
+## more
+
+##### 1 all support modules whole information
+
+* http module：
+```javascript
+      //http_client
+      {
+            "type":"http_client",
+            "host_ip":"",//本机Ip
+            "host_name":"",//本机名
+            "server_ip":"",//请求目的主机的Ip target server ip
+            "server_port":"",//请求主机上对应服务监听的端口 target server port
+            "path":"",
+            "headers":"",
+            "method":"",
+            "time_cost":"",
+            "is_error":"",
+            "error":"",
+            "dest":""
+      }
+       dest="http://"+server_ip+":"+server_port+path
+      //http_server
+      {
+            "type":"http_server",
+            "host_ip":"",//本机Ip
+            "host_name":"",//本机名
+            "host_port":"",
+            "client_ip":"",//对方主机Ip 
+            "time_cost":"",
+            "dest":"",
+            "req_method":"",
+            "res_statuscode":"",
+            "is_error":"",
+            "error":""
+      }
+      dest="http://"+host_ip+":"+host_port+req.url
+```
+
+* mysql module
+```javascript
+     {
+            "type":"mysql",
+            "host_ip":"",//本机ip
+            "host_name":"",//本机名
+            "server_ip":"",//mysql所在服务器的IP
+            "server_port":"",//mysql工作的端口
+            "database":"",//数据库名
+            "time_cost":"",//耗时
+            "sql":"",//本次请求的sql语句
+            "parameter":"",//本次请求发送的参数
+            "is_error":false,//是否出错
+            "error":"",//error.message
+            "dest":""//应当时拓扑图要求加的参数
+     }
+     dest=server_ip+":"+"/"+server_port+"/"+database
+```
+
+* redis module
+```javascript
+   {
+                "type":"redis",
+                "host_ip":"",//本机ip
+                "host_name":"",//本机名
+                "server_ip":"",//redis所在主机的IP
+                "server_port":"",//redis的工作端口
+                "command":"",//本条操作所使用的redis指令名
+                "parameter":"",//参数
+                "is_error":false,
+                "error":"",
+                "time_cost":0,
+                "dest":""
+   }
+   dest=server_ip+":"+server_port
+```
+
+* pg module
+```javascript
+   {
+             "type":"pg",
+             "host_ip":"",//本机ip
+             "host_name":"",//本机名
+             "server_ip":"",//redis所在主机的IP
+             "server_port":"",//redis的工作端口
+             "database":"",//目标数据库名
+             "sql":"",
+             "parameter":"",
+             "is_error":"",
+             "error":"",
+             "time_cost":"",
+             "dest":""
+   }
+   dest=server_ip+":"+"/"+server_port+"/"+database
+```
+ 
+##### 3. self-defined probes
+
+###### 3.1 Promise 
 ```javascript
   var szzs=require("szzs"); 
 
@@ -195,7 +192,8 @@ szzs.config(config).on("message",function(msg){
       console.error(err.stack);
     });
 ```
-监测到的信息会发往 `szzs.config().on("message",function(msg){})`你只需在项目的开始监听一次即可，而你可以在项目中的任何一个地方使用自定义探针。收集的自定义探针信息示例
+ 
+ information collected by szzs 
 ```javascript
  {{ type: 'test Promise',
   is_error: false,
@@ -205,7 +203,7 @@ szzs.config(config).on("message",function(msg){
   parameter: [ 1 ],
   output: 10 }
 ```
-###### 3.2 非Promise类型
+###### 3.2 not promise
 ```javascript
 var szzs=require("szzs");
 
