@@ -1,6 +1,10 @@
 ## intro
     szzs is node.js performance probe, it can gather information of some frequently-used node.js lib ,such as mysql,postgress,redis,and http module. Not for all common-use libs,and I am __not going to maintaining__ this project. But it shows a nice way to collect information at runtime.The core code is in directory main and spy,and main idea is hooking target module when it is loading by the module system.
-  
+
+#### An aplication screenshot powered by this module
+
+![](https://github.com/yyrdl/SZZS/blob/master/img/demo.png)
+
 ## how to use
  npm install szzs
   
@@ -235,7 +239,3 @@ setTimeout(function(){
   parameter: [ 2 ] }
 ```
 
-##一个应用截图
-这是当初运用这个做的公司分布式服务的监控截图，可以实时监控每一个节点，每一条路径的运行情况。支持动态添加节点。图
-是用D3画的，然后使用了ElasticSearch.
-![](https://github.com/yyrdl/SZZS/blob/master/img/demo.png)
